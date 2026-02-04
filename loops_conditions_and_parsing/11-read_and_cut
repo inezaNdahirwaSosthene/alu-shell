@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Reads passwd
+while IFS=: read -r u _ id _ _ h _; do echo "$u:$id:$h"; done < /etc/passwd
