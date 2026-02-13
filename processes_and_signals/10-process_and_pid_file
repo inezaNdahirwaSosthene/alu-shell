@@ -1,7 +1,35 @@
 #!/usr/bin/env bash
-# Manages PID file and handles signals
-echo "$$" > /var/run/myscript.pid
-trap 'echo "I hate the kill command"' SIGTERM
-trap 'echo "Y U no love me?!"' SIGINT
-trap 'rm -f /var/run/myscript.pid; exit' SIGQUIT SIGTERM
-while true; do echo "To infinity and beyond"; sleep 2; done
+# Script that creates a PID file, displays messages indefinitely, and handles signals
+
+# Function to handle SIGTERM
+sigterm_handler() {
+    echo "I hate the kill command"
+    rm -f /var/run/myscript.pid
+    exit 0
+}
+
+# Function to handle SIGINT
+sigint_handler() {
+    echo "Y U no love me?!"
+}
+
+# Function to handle SIGQUIT
+sigquit_handler() {
+    rm -f /var/run/myscript.pid
+    exit 0
+}
+
+# Set up signal traps
+trap sigterm_handler SIGTERM
+trap sigint_handler SIGINT
+trap sigquit_handler SIGQUIT
+
+# Create PID file with current process ID
+echo $$ > /var/run/myscript.pid
+
+# Infinite loop displaying message
+while true
+do
+    echo "To infinity and beyond"
+    sleep 2
+done
